@@ -43,6 +43,33 @@ describe('API Testing', () => {
             });
     });
 
+
+    // New test case: Update an item by id
+    it('should update an item with new data', (done) => {
+        const updatedData = { name: 'Updated Item' };
+
+        // First, create a new item to be updated
+        request(app)
+            .post('/api/items')
+            .send({ name: 'Item to Update' })
+            .end((err, res) => {
+                const itemId = res.body.id;
+
+                // Update the created item
+                request(app)
+                    .put(`/api/items/${itemId}`)
+                    .send(updatedData)
+                    .end((err, res) => {
+                        expect(res.status).to.equal(200);
+                        expect(res.body).to.have.property('id', itemId);
+                        expect(res.body).to.have.property('name', 'Updated Item');
+                        done();
+                    });
+            });
+    });
+
+
+
     // Test case for deleting an item
     it('should delete an item by id', (done) => {
         request(app)
