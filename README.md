@@ -1,6 +1,6 @@
 # Pengujian dan Penjaminan Mutu Perangkat Lunak (PPMPL)
 
-Praktikum 2
+Praktikum 3
 
 Nama : Gemilang Tirto Ismoyo Santoso
 
