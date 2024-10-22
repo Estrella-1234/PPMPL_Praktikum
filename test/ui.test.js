@@ -2,7 +2,8 @@ const { Builder, By, until } = require('selenium-webdriver');
 const { expect } = require('chai');
 
 describe('UI Testing using Selenium', function () {
-    this.timeout(30000); // Set timeout for Mocha tests
+    this.timeout(60000); // 60 seconds timeout for tests
+
     let driver;
 
     // Initialize WebDriver before running test cases
@@ -16,7 +17,8 @@ describe('UI Testing using Selenium', function () {
     });
 
     it('should load the login page', async function () {
-        await driver.get('C:/Users/user/Downloads/Prak_selenium-ui-test-main/Prak_selenium-ui-test-main/loginPage.html'); // Update path as needed
+        const loginPagePath = 'file:///C:/Users/Lenovo/Documents/Project/PPMPL/praktikum-testing/loginPage.html';
+        await driver.get(loginPagePath);
         const title = await driver.getTitle();
         expect(title).to.equal('Login Page');
     });
@@ -47,7 +49,8 @@ describe('UI Testing using Selenium', function () {
     });
 
     it('should handle failed login attempts', async function () {
-        await driver.get('C:/Users/user/Downloads/Prak_selenium-ui-test-main/Prak_selenium-ui-test-main/loginPage.html'); // Reload the login page
+        const loginPagePath = 'file:///C:/Users/Lenovo/Documents/Project/PPMPL/praktikum-testing/loginPage.html';
+        await driver.get(loginPagePath);
         
         await driver.findElement(By.css('#username')).sendKeys('wronguser');
         await driver.findElement(By.css('#password')).sendKeys('wrongpassword');
