@@ -1,14 +1,24 @@
 const { Builder, By, until } = require('selenium-webdriver');
+const chrome = require('selenium-webdriver/chrome');
 const { expect } = require('chai');
 
+const options = new chrome.Options();
+options.addArguments('--headless'); // Run headless
+options.addArguments('--disable-gpu');
+options.addArguments('--no-sandbox');
+options.addArguments('--window-size=1920,1080');
+options.addArguments('--disable-extensions');
+options.addArguments('--disable-infobars');
+options.addArguments('--disable-dev-shm-usage');
+
 describe('UI Testing using Selenium', function () {
-    this.timeout(60000); // 60 seconds timeout for tests
+    this.timeout(60000); // Set timeout for Mocha tests
 
     let driver;
 
     // Initialize WebDriver before running test cases
     before(async function () {
-        driver = await new Builder().forBrowser('chrome').build(); // Change to 'firefox' for Firefox
+        driver = await new Builder().forBrowser('chrome').setChromeOptions(options).build();
     });
 
     // Close WebDriver after all tests are done
@@ -17,7 +27,7 @@ describe('UI Testing using Selenium', function () {
     });
 
     it('should load the login page', async function () {
-        const loginPagePath = 'file:///C:/Users/Lenovo/Documents/Project/PPMPL/praktikum-testing/loginPage.html';
+        const loginPagePath = 'file:///C:/Users/Lenovo/Documents/Project/PPMPL/praktikum-testing/loginPage.html'; // Full path to your HTML file
         await driver.get(loginPagePath);
         const title = await driver.getTitle();
         expect(title).to.equal('Login Page');
@@ -49,8 +59,7 @@ describe('UI Testing using Selenium', function () {
     });
 
     it('should handle failed login attempts', async function () {
-        const loginPagePath = 'file:///C:/Users/Lenovo/Documents/Project/PPMPL/praktikum-testing/loginPage.html';
-        await driver.get(loginPagePath);
+        await driver.get('file:///C:/Users/Lenovo/Documents/Project/PPMPL/praktikum-testing/loginPage.html'); // Reload the login page
         
         await driver.findElement(By.css('#username')).sendKeys('wronguser');
         await driver.findElement(By.css('#password')).sendKeys('wrongpassword');
@@ -68,6 +77,22 @@ describe('UI Testing using Selenium', function () {
         const errorMessage = await errorMessageElement.getText();
         expect(errorMessage).to.equal('Invalid username or password.'); // Adjust expected message as needed
     });
+    
+    it('should input data using CSS Selector and XPath', async function () {
+
+        await driver.findElement(By.id('username')).clear();
+        await driver.findElement(By.id('password')).clear();
+
+        await driver.findElement(By.css('#username')).sendKeys('testuser');
+
+        await driver.findElement(By.xpath('//*[@id="password"]')).sendKeys('password123');
+
+        const usernameValue = await driver.findElement(By.id('username')).getAttribute('value');
+        const passwordValue = await driver.findElement(By.id('password')).getAttribute('value');
+
+        expect(usernameValue).to.equal('testuser');
+        expect(passwordValue).to.equal('password123');
+    });
 
     it('should validate visibility of login elements', async function () {
         const isLoginButtonDisplayed = await driver.findElement(By.css('#loginButton')).isDisplayed();
