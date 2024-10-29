@@ -45,6 +45,10 @@ class ItemUser(HttpUser):
     def delete_item(self):
         if items_db:  # Pastikan ada item untuk dihapus
             item_to_delete = random.choice(items_db)
-            self.client.delete(f"/items/{item_to_delete['id']}")
-            items_db.remove(item_to_delete)  # Hapus dari database lokal
+            # Only remove if the item is in the list
+            if item_to_delete in items_db:
+                self.client.delete(f"/items/{item_to_delete['id']}")
+                items_db.remove(item_to_delete)  # Hapus dari database lokal
 
+
+# locust -f locustfile.py --host http://127.0.0.1:8000
