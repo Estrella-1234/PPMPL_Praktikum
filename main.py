@@ -54,3 +54,5 @@ def delete_item(item_id: int):
             del items_db[index]
             return {"detail": "Item deleted"}
     raise HTTPException(status_code=404, detail="Item not found")
+
+# uvicorn main:app --reload
