@@ -5,6 +5,7 @@ const Counter = () => {
 
   const increment = () => setCount(count + 1);
   const decrement = () => setCount(count - 1);
+  const reset = () => setCount(0);
 
   return (
     <div>
@@ -14,6 +15,9 @@ const Counter = () => {
       </button>
       <button onClick={decrement} data-testid="decrement-button">
         Decrement
+      </button>
+      <button onClick={reset} data-testid="reset-button">
+        Reset
       </button>
     </div>
   );
